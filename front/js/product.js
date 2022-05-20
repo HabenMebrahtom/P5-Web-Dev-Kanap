@@ -7,7 +7,10 @@ const productImage = document.getElementById('item__img');
 const title = document.getElementById('title');
 const price = document.getElementById('price');
 const description = document.getElementById('description');
-const colors = document.getElementById('colors')
+const colors = document.getElementById('colors');
+const quantity = document.getElementById('quantity');
+const addToCart = document.getElementById('addToCart');
+
 
 const getProduct = async () => {
     try {
@@ -18,7 +21,12 @@ const getProduct = async () => {
         <img src="${jsonResponse.imageUrl}" alt="${jsonResponse.altText}">`;
         description.innerHTML += `${jsonResponse.description}`;
         title.innerHTML += `${jsonResponse.name}`;
-        price.innerHTML += `${jsonResponse.price/10}`;
+        price.innerHTML += `${jsonResponse.price / 10}`;
+        colors.innerHTML = `
+         <option value="">--Please, select a color --</option>
+         ${jsonResponse.colors.map(color => {
+             return `<option value="${color}"> ${color}</option>`;
+         })}`;
     } catch (error) {
         console.log(error)
     }
