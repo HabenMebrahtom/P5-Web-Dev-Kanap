@@ -27,6 +27,19 @@ const getProduct = async () => {
          ${jsonResponse.colors.map(color => {
              return `<option value="${color}"> ${color}</option>`;
          })}`;
+
+        
+        addToCart.addEventListener('submit', () => {
+            const cartObject = {
+                color: colors.value,
+                id: productId,
+                name: jsonResponse.name,
+                price: jsonResponse.price / 10,
+                quantity: quantity.value
+            }
+
+            console.log(cartObject);
+        });
     } catch (error) {
         console.log(error)
     }
