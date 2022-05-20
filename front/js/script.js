@@ -8,7 +8,7 @@ const getData = async () => {
         const response = await fetch(apiUrl);
          const jsonResponse = await response.json();
         
-        jsonResponse.forEach(item => {
+        jsonResponse.forEach(product => {
             const item = document.createElement('div');
 
             item.innerHTML += `
