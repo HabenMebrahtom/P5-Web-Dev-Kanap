@@ -1,5 +1,6 @@
 const apiUrl = "http://localhost:3000/api/products";
 
+// get product id from the search parameter
 const params = new URLSearchParams(document.location.search);
 const productId = params.get('id');
 
@@ -14,35 +15,54 @@ const addToCart = document.getElementById('addToCart');
 
 const getProduct = async () => {
     try {
+
+        //fetching data
         const response = await fetch(apiUrl + '/' + productId)
         const jsonResponse = await response.json();
-
-         productImage.innerHTML += `
-        <img src="${jsonResponse.imageUrl}" alt="${jsonResponse.altText}">`;
-        description.innerHTML += `${jsonResponse.description}`;
-        title.innerHTML += `${jsonResponse.name}`;
-        price.innerHTML += `${jsonResponse.price / 10}`;
-        colors.innerHTML = `
-         <option value="">--Please, select a color --</option>
-         ${jsonResponse.colors.map(color => {
-             return `<option value="${color}"> ${color}</option>`;
-         })}`;
-
         
-        addToCart.addEventListener('submit', () => {
-            const cartObject = {
-                color: colors.value,
-                id: productId,
-                name: jsonResponse.name,
-                price: jsonResponse.price / 10,
-                quantity: quantity.value
-            }
+        // display product inside html with the fetched data
+         productImage.innerHTML += `
+            <img src="${jsonResponse.imageUrl}" alt="${jsonResponse.altText}">`;
+            description.innerHTML += `${jsonResponse.description}`;
+            title.innerHTML += `${jsonResponse.name}`;
+            price.innerHTML += `${jsonResponse.price / 10}`;
+            colors.innerHTML = `
+            <option value="">--Please, select a color --</option>
+            ${jsonResponse.colors.map(color => {
+                return `<option value="${color}"> ${color}</option>`;
+            })
+                }`;  
+         
+        setItems(jsonResponse);
 
-            console.log(cartObject);
-        });
     } catch (error) {
         console.log(error)
     }
 };
+
+       // Set Items to local storage
+const setItems = (product) => {
+   
+    addToCart.addEventListener('click', (event) => {
+                event.preventDefault();
+
+        if (quantity.value > 0) {
+            addToCart.disabled = false;
+                let cartObject = {
+                    name: product.name,
+                    color: colors.value,
+                    price: product.price,
+                    qty: quantity.value,
+                    id: productId
+                }
+            } else {
+            addToCart.disabled = true;
+            }
+            
+            const keyItem = `${product.name}, ${productId}`;
+            window.localStorage.setItem(keyItem, JSON.stringify(cartObject));     
+    })
+}
+
 
 getProduct();
