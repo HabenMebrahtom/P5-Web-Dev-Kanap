@@ -47,16 +47,21 @@ const setItems = (product) => {
                 event.preventDefault();
 
         if (quantity.value > 0) {
-                let cartObject = {
+
+            //cart object
+            let cartObject = {
+                    id: productId,
                     name: product.name,
                     color: colors.value,
                     price: product.price,
-                    qty: quantity.value,
-                    id: productId
+                    qty: quantity.value
             }  
-              const keyItem = `${product.name}, ${productId}`;
-              window.localStorage.setItem(keyItem, JSON.stringify(cartObject));
-        }     
+
+              const itemKey = `${product.name}, ${productId}`;
+              window.localStorage.setItem(itemKey, JSON.stringify(cartObject));
+        }   
+        
+        window.location.href = "cart.html"
     })
 }
 
