@@ -47,20 +47,16 @@ const setItems = (product) => {
                 event.preventDefault();
 
         if (quantity.value > 0) {
-            addToCart.disabled = false;
                 let cartObject = {
                     name: product.name,
                     color: colors.value,
                     price: product.price,
                     qty: quantity.value,
                     id: productId
-                }
-            } else {
-            addToCart.disabled = true;
-            }
-            
-            const keyItem = `${product.name}, ${productId}`;
-            window.localStorage.setItem(keyItem, JSON.stringify(cartObject));     
+            }  
+              const keyItem = `${product.name}, ${productId}`;
+              window.localStorage.setItem(keyItem, JSON.stringify(cartObject));
+        }     
     })
 }
 
