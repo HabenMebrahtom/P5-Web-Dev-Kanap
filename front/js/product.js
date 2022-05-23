@@ -19,13 +19,14 @@ const getProduct = async () => {
         //fetching data
         const response = await fetch(apiUrl + '/' + productId)
         const jsonResponse = await response.json();
+        console.log(jsonResponse)
         
         // display product inside html with the fetched data
          productImage.innerHTML += `
             <img src="${jsonResponse.imageUrl}" alt="${jsonResponse.altText}">`;
             description.innerHTML += `${jsonResponse.description}`;
             title.innerHTML += `${jsonResponse.name}`;
-            price.innerHTML += `${jsonResponse.price / 10}`;
+            price.innerHTML += `${jsonResponse.price / 10}`;  //divide the price to ten
             colors.innerHTML = `
             <option value="">--Please, select a color --</option>
             ${jsonResponse.colors.map(color => {
@@ -53,8 +54,10 @@ const setItems = (product) => {
                     id: productId,
                     name: product.name,
                     color: colors.value,
-                    price: product.price,
-                    qty: quantity.value
+                    price: product.price / 10, //divide the price to ten
+                    qty: quantity.value,
+                    image: product.imageUrl,
+                    alt: product.altTxt
             }  
 
               const itemKey = `${product.name}, ${productId}`;
