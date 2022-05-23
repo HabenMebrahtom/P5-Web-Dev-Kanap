@@ -4,7 +4,8 @@ const cartTotalPrice = [];
 const totalQty = [];
 
 const displayItems = document.getElementById('cart__items');
- const qtyDisplay = document.getElementById('totalQuantity')
+const qtyDisplay = document.getElementById('totalQuantity');
+const totalPrice = document.getElementById('totalPrice');
 
 
 // get items from local Storage
@@ -75,10 +76,28 @@ const totalQuantity = () => {
 
 totalQuantity();
 
+
+
+
 // calculate the total price
 
-const totalPrice = () => {
+const calculateTotalPrice = () => {
+    for (let item of cartItems) {
+        let price = parseInt(item.price);
+        let itemQty = parseInt(item.qty);
 
+        const tPrice = price * itemQty;
+         cartTotalPrice.push(tPrice);
+    }   
 }
 
-totalPrice();
+calculateTotalPrice();
+
+
+//calculate the sum of total prices and display it inside html
+
+const totalAmount = cartTotalPrice.reduce((prev, current) => {
+    return prev + current;
+})
+
+totalPrice.innerHTML =  totalAmount;

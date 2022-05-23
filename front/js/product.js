@@ -26,7 +26,7 @@ const getProduct = async () => {
             <img src="${jsonResponse.imageUrl}" alt="${jsonResponse.altText}">`;
             description.innerHTML += `${jsonResponse.description}`;
             title.innerHTML += `${jsonResponse.name}`;
-            price.innerHTML += `${jsonResponse.price / 10}`;  //divide the price to ten
+            price.innerHTML += `${jsonResponse.price}`; 
             colors.innerHTML = `
             <option value="">--Please, select a color --</option>
             ${jsonResponse.colors.map(color => {
@@ -54,7 +54,7 @@ const setItems = (product) => {
                     id: productId,
                     name: product.name,
                     color: colors.value,
-                    price: product.price / 10, //divide the price to ten
+                    price: product.price,
                     qty: quantity.value,
                     image: product.imageUrl,
                     alt: product.altTxt
