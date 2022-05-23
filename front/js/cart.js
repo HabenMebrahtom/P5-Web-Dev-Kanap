@@ -8,6 +8,7 @@ const qtyDisplay = document.getElementById('totalQuantity');
 const totalPrice = document.getElementById('totalPrice');
 
 
+
 // get items from local Storage
 const getCartItems = () => {
     for (const [key, value] of Object.entries(localStorage)) {
@@ -50,7 +51,7 @@ if (cartItems.length > 0) {
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
                       <p>Quantity: </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="qty" value="${item.qty}">
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="newQuantity" value="${item.qty}">
                     </div>
                     <div class="cart__item__content__settings__delete">
                          <p class="deleteItem">Delete</p>
@@ -100,4 +101,35 @@ const totalAmount = cartTotalPrice.reduce((prev, current) => {
     return prev + current;
 })
 
-totalPrice.innerHTML =  totalAmount;
+totalPrice.innerHTML = totalAmount;
+
+
+//update cart items with change in the quality input
+
+const updateItems = () => {
+
+    const newQty = document.getElementById('newQuantity');
+
+    for (let item of cartItems) {
+        newQty.addEventListener('input', (event) => {
+            event.preventDefault();
+
+            if (newQty.value > 0) {
+                let newCartObject = {
+                    id: item.id,
+                    name: item.name,
+                    color: item.color,
+                    price: item.price,
+                    qty: this.target.value,
+                    image: item.image,
+                    alt: item.alt
+                }
+                const itemKey = `${item.name}, ${item.id}`;
+                window.localStorage.setItem(itemKey, JSON.stringify(newCartObject));
+                window.location.reload();
+            }
+        });
+    }
+}
+
+updateItems()
