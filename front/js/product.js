@@ -61,7 +61,7 @@ const setItems = (product) => {
               window.localStorage.setItem(itemKey, JSON.stringify(cartObject));
         }   
         
-        window.location.href = "cart.html"
+        window.location.href = "cart.html?id=${}"
     })
 }
 
