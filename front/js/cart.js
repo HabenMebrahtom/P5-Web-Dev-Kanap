@@ -1,8 +1,10 @@
 const cartItems = [];
 const productId = [];
 const cartTotalPrice = [];
+const totalQty = [];
 
- const displayItems = document.getElementById('cart__items');
+const displayItems = document.getElementById('cart__items');
+ const qtyDisplay = document.getElementById('totalQuantity')
 
 
 // get items from local Storage
@@ -21,6 +23,7 @@ const getCartItems = () => {
 }
 
 getCartItems();
+
 
 
 // display cart items inside html file
@@ -49,10 +52,33 @@ if (cartItems.length > 0) {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="qty" value="${item.qty}">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                      <p class="deleteItem">Delete</p>
+                         <p class="deleteItem">Delete</p>
                     </div>
                   </div>
                 </div>
               </article>`;
    }
 }
+
+
+// calculate the total quantity of items
+
+const totalQuantity = () => {
+    let qty = 0;
+    for (let item of cartItems) {
+        qty += parseInt(item.qty)   
+    }
+
+    totalQty.push(qty)
+    qtyDisplay.innerHTML = totalQty;
+}
+
+totalQuantity();
+
+// calculate the total price
+
+const totalPrice = () => {
+
+}
+
+totalPrice();
