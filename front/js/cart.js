@@ -54,7 +54,7 @@ if (cartItems.length > 0) {
                       <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="newQuantity" value="${item.qty}">
                     </div>
                     <div class="cart__item__content__settings__delete">
-                         <p class="deleteItem">Delete</p>
+                         <p class="deleteItem" id="deleteItem">Delete</p>
                     </div>
                   </div>
                 </div>
@@ -62,6 +62,23 @@ if (cartItems.length > 0) {
    }
 }
 
+
+// remove an item from local storage
+const removeCartItem = document.getElementById('deleteItem');
+
+const removeItems = () => {
+    for (let i = 0; i < cartItems.length; i++) {
+        removeCartItem.value = Object.keys(localStorage)[i];
+        removeCartItem.addEventListener('click', () => {
+            if (removeCartItem.value) {
+                localStorage.removeItem(removeCartItem.value)
+                location.reload();
+         }
+    })
+    }
+}
+
+removeItems();
 
 // calculate the total quantity of items
 
@@ -110,23 +127,23 @@ const updateItems = () => {
 
     const newQty = document.getElementById('newQuantity');
 
-    for (let item of cartItems) {
-        newQty.addEventListener('input', (event) => {
+    for (let i = 0; i < cartItems.length; i++) {
+        newQty.addEventListener('change', (event) => {
             event.preventDefault();
 
             if (newQty.value > 0) {
                 let newCartObject = {
-                    id: item.id,
-                    name: item.name,
-                    color: item.color,
-                    price: item.price,
-                    qty: this.target.value,
-                    image: item.image,
-                    alt: item.alt
+                    id: cartItems[i].id,
+                    name: cartItems[i].name,
+                    color: cartItems[i].color,
+                    price: cartItems[i].price,
+                    qty: event.target.value,
+                    image: cartItems[i].image,
+                    alt: cartItems[i].alt
                 }
-                const itemKey = `${item.name}, ${item.id}`;
+                const itemKey = `${cartItems[i].name}, ${cartItems[i].id}`;
                 window.localStorage.setItem(itemKey, JSON.stringify(newCartObject));
-                window.location.reload();
+                location.reload(true);
             }
         });
     }
