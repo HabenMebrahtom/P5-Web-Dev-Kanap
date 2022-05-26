@@ -139,7 +139,7 @@ for (let item of cartItems) {
             alt: item.alt
         }
 
-        const itemKey = `${item.name}, ${item.id}`;
+        const itemKey = `${item.name}, ${item.color}`;
          localStorage.setItem(itemKey, JSON.stringify(newCart));
          location.reload();
        
