@@ -51,7 +51,7 @@ if (cartItems.length > 0) {
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
                       <p>Quantity: </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="newQuantity" value="${item.qty}">
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="new-quantity" value="${item.qty}">
                     </div>
                     <div class="cart__item__content__settings__delete">
                          <p class="deleteItem" id="deleteItem">Delete</p>
@@ -123,30 +123,86 @@ totalPrice.innerHTML = totalAmount;
 
 //update cart items with change in the quality input
 
-const updateItems = () => {
+const newQtys = document.getElementsByClassName('itemQuantity');
+for (let item of cartItems) {
+   for (let newQty of newQtys) {
+     newQty.addEventListener('change', (event) => {
+        event.preventDefault();
+       
+        let newCart = {
+            id: item.id,
+            name: item.name,
+            color: item.color,
+            price: item.price,
+            qty: event.target.value,
+            image: item.image,
+            alt: item.alt
+        }
 
-    const newQty = document.getElementById('newQuantity');
+        const itemKey = `${item.name}, ${item.id}`;
+         localStorage.setItem(itemKey, JSON.stringify(newCart));
+         location.reload();
+       
+    })
+  }         
+}
 
-    for (let i = 0; i < cartItems.length; i++) {
-        newQty.addEventListener('change', (event) => {
-            event.preventDefault();
 
-            if (newQty.value > 0) {
-                let newCartObject = {
-                    id: cartItems[i].id,
-                    name: cartItems[i].name,
-                    color: cartItems[i].color,
-                    price: cartItems[i].price,
-                    qty: event.target.value,
-                    image: cartItems[i].image,
-                    alt: cartItems[i].alt
-                }
-                const itemKey = `${cartItems[i].name}, ${cartItems[i].id}`;
-                window.localStorage.setItem(itemKey, JSON.stringify(newCartObject));
-                location.reload(true);
-            }
-        });
+
+
+// validate the form
+
+const firstName = document.getElementById('firstName');
+const lastName = document.getElementById('lastName');
+const address = document.getElementById('address');
+const city = document.getElementById('city');
+const email = document.getElementById('email');
+const order = document.getElementById('order');
+
+const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
+const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
+const addressErrorMsg = document.getElementById('addressErrorMsg');
+const cityErrorMsg = document.getElementById('cityErrorMsg');
+const emailErrorMsg = document.getElementById('emailErrorMsg');
+
+
+// checking the valid email adress
+const validateEmail = (mail) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(String(mail).toLocaleLowerCase())) {
+        return true;
+    } else {
+        return false;
     }
 }
 
-updateItems()
+
+const passValidationForm = () => {
+    if (firstName.value != "" && lastName.value != "" && address.value != "" && city.value != "" && validateEmail(email.value) != false) {
+        return true;
+    } else if(firstName.value === "") {
+        firstNameErrorMsg.innerHTML = "Please write your  first name";
+        firstNameErrorMsg.style.color = 'red';
+        return false;
+    } else if (lastName.value == "") {
+        lastNameErrorMsg.innerHTML = "Please write your  last name";
+        lastNameErrorMsg.style.color = 'red';
+        return false;
+    } else if (address.value == "") {
+        addressErrorMsg.innerHTML = "Please write your  address";
+        addressErrorMsg.style.color = 'red';
+        return false;
+    } else if (city.value == "") {
+        cityErrorMsg.innerHTML = "Please write your  city name";
+        cityErrorMsg.style.color = 'red';
+        return false;
+    } else if (validateEmail(email.value) == false || email.value == "") {
+        emailErrorMsg.innerHTML = "Please enter your valid email adress";
+        emailErrorMsg.style.color = 'red';
+        return false
+    } else {
+        return false
+    }
+}
+
+//passValidationForm();
