@@ -121,31 +121,29 @@ const totalAmount = cartTotalPrice.reduce((prev, current) => {
 totalPrice.innerHTML = totalAmount;
 
 
-//update cart items with change in the quality input
+//update cart items with change event in the quality input
 
-const newQtys = document.getElementsByClassName('itemQuantity');
-for (let item of cartItems) {
-   for (let newQty of newQtys) {
-     newQty.addEventListener('change', (event) => {
+const newQtys = document.querySelector('.itemQuantity');
+
+   newQtys.addEventListener('change', (event) => {
         event.preventDefault();
-       
-        let newCart = {
-            id: item.id,
-            name: item.name,
-            color: item.color,
-            price: item.price,
-            qty: event.target.value,
-            image: item.image,
-            alt: item.alt
-        }
+       for (let item of cartItems) {
+            let newCart = {
+                id: item.id,
+                name: item.name,
+                color: item.color,
+                price: item.price,
+                qty: event.target.value,
+                image: item.image,
+                alt: item.alt
+            }
 
-        const itemKey = `${item.name}, ${item.color}`;
-         localStorage.setItem(itemKey, JSON.stringify(newCart));
-         location.reload();
-       
+                const itemKey = `${item.name}, ${item.color}`;
+                localStorage.setItem(itemKey, JSON.stringify(newCart));
+                location.reload();
+            } 
     })
-  }         
-}
+         
 
 
 
@@ -157,7 +155,6 @@ const lastName = document.getElementById('lastName');
 const address = document.getElementById('address');
 const city = document.getElementById('city');
 const email = document.getElementById('email');
-const order = document.getElementById('order');
 
 const firstNameErrorMsg = document.getElementById('firstNameErrorMsg');
 const lastNameErrorMsg = document.getElementById('lastNameErrorMsg');
@@ -206,3 +203,43 @@ const passValidationForm = () => {
 }
 
 //passValidationForm();
+
+
+// sending the selected Items to the server
+
+const order = document.getElementById('order');
+
+order.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    if (passValidationForm()) {
+        const postForm = async() => {
+            const rawResponse = await fetch("http://localhost:3000/api/products/order", {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contact: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        address: address.value,
+                        city: city.value,
+                        email: email.value
+                    },
+                    products: productId
+                })
+            });
+
+            const jsonRawResponse = await rawResponse.json();
+            console.log(jsonRawResponse);
+
+            localStorage.clear()
+            
+            location.href = `confirmation.html?orderId=${jsonRawResponse.orderId}`
+        }
+
+        postForm();
+    }
+})
