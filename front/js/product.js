@@ -51,7 +51,7 @@ const setItems = (product) => {
 
             //cart object
             let cartObject = {
-                    id: productId,
+                    id: product._id,
                     name: product.name,
                     color: colors.value,
                     price: product.price,
@@ -60,8 +60,8 @@ const setItems = (product) => {
                     alt: product.altTxt
             }  
 
-              const itemKey = `${product.name}, ${productId}`;
-              window.localStorage.setItem(itemKey, JSON.stringify(cartObject));
+            const itemKey = `${product.name}, ${product.color}`;
+            window.localStorage.setItem(itemKey, JSON.stringify(cartObject));
         }   
         
         window.location.href = "cart.html"
