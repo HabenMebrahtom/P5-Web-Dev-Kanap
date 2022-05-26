@@ -51,7 +51,7 @@ if (cartItems.length > 0) {
                   <div class="cart__item__content__settings">
                     <div class="cart__item__content__settings__quantity">
                       <p>Quantity: </p>
-                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="new-quantity" value="${item.qty}">
+                      <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" id="${item.id}" value="${item.qty}">
                     </div>
                     <div class="cart__item__content__settings__delete">
                          <p class="deleteItem" id="deleteItem">Delete</p>
@@ -61,6 +61,8 @@ if (cartItems.length > 0) {
               </article>`;
    }
 }
+
+
 
 
 // remove an item from local storage
@@ -123,30 +125,37 @@ totalPrice.innerHTML = totalAmount;
 
 //update cart items with change event in the quality input
 
-const newQtys = document.querySelector('.itemQuantity');
+const newQtys = document.querySelectorAll('.itemQuantity');
 
-   newQtys.addEventListener('change', (event) => {
-        event.preventDefault();
-       for (let item of cartItems) {
-            let newCart = {
-                id: item.id,
-                name: item.name,
-                color: item.color,
-                price: item.price,
-                qty: event.target.value,
-                image: item.image,
-                alt: item.alt
-            }
 
-                const itemKey = `${item.name}, ${item.color}`;
-                localStorage.setItem(itemKey, JSON.stringify(newCart));
-                location.reload();
-            } 
-    })
+newQtys.forEach(element => {
+     element.addEventListener('change', (event) => {
+         event.preventDefault();
          
+         let currentId = event.target.id
+            for (let item of cartItems) {
+                 
+                if (item.id === currentId) {
+                    let newCart = {
+                        id: item.id,
+                        name: item.name,
+                        color: item.color,
+                        price: item.price,
+                        qty: event.target.value,
+                        image: item.image,
+                        alt: item.alt
+                    }
 
-
-
+                    const itemKey = `${item.name}, ${item.color}`;
+                    localStorage.setItem(itemKey, JSON.stringify(newCart));
+                    location.reload();
+                }
+                 
+            }
+        });
+        
+    })
+   
 
 // validate the form
 
