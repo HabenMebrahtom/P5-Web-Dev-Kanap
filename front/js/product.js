@@ -60,7 +60,7 @@ const setItems = (product) => {
                     alt: product.altTxt
             }  
 
-            const itemKey = `${product.name}, ${colors.value}`;
+            const itemKey = `${product._id}, ${colors.value}`;
             window.localStorage.setItem(itemKey, JSON.stringify(cartObject));
         }   
         
