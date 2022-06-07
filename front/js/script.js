@@ -7,7 +7,7 @@ const getData = async () => {
 
         const response = await fetch(apiUrl);
          const jsonResponse = await response.json();
-        
+    
         jsonResponse.forEach(product => {
             items.innerHTML += `
              <a href="./product.html?id=${product._id}">
