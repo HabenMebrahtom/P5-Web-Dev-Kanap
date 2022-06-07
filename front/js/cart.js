@@ -146,7 +146,7 @@ newQtys.forEach(element => {
                         alt: item.alt
                     }
 
-                    const itemKey = `${item.name}, ${item.color}`;
+                    const itemKey = `${item.id}, ${item.color}`;
                     localStorage.setItem(itemKey, JSON.stringify(newCart));
                     location.reload();
                 }
